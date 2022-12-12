@@ -14,7 +14,7 @@ function list(req, res, next) {
   res.json({ data: dishes });
 }
 
-function isValid(req, res, next) {
+function isValidDish(req, res, next) {
   const { data: { name, description, price, image_url } = {} } = req.body;
 
   if (!name || name === "") {
@@ -38,7 +38,7 @@ function isValid(req, res, next) {
 }
 
 function create(req, res, next) {
-    const { data: { name, description, price, image_url } = {} } = req.body
+  const { data: { name, description, price, image_url } = {} } = req.body;
   const newDish = {
     id: nextId(),
     name,
@@ -50,10 +50,25 @@ function create(req, res, next) {
   res.status(201).json({ data: newDish });
 }
 
+function findDish(req, res, next) {
+  const { dishId } = req.params;
+  let foundDish = dishes.find((dish) => dish.id === dishId);
+  if (foundDish) {
+    res.locals.foundDish = foundDish;
+    return next();
+  }
+  next({ status: 404, message: `Dish Id: ${dishId} not found` });
+}
+
+function read(req, res, next) {
+  const {foundDish} = res.locals
+  res.json({ data: foundDish });
+}
+
 module.exports = {
   list,
-  create: [isValid, create],
-  // read: [urlExists, read],
+  create: [isValidDish, create],
+  read: [findDish, read],
   // update: [urlExists, hasHref, update],
   // urlExists,
 };

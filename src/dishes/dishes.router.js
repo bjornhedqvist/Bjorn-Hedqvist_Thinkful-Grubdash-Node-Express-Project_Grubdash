@@ -5,7 +5,8 @@ const methodNotAllowed = require("../errors/methodNotAllowed")
 const ordersRouter = require("../orders/orders.router")
 
 // /dishes routes
-
+router.route("/:dishId")
+    .get(dishesController.read)
 
 router.route("/")
     .get(dishesController.list)

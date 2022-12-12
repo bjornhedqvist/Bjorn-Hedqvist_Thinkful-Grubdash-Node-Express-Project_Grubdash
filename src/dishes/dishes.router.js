@@ -7,6 +7,8 @@ const ordersRouter = require("../orders/orders.router")
 // /dishes routes
 router.route("/:dishId")
     .get(dishesController.read)
+    .put(dishesController.update)
+    .all(methodNotAllowed)
 
 router.route("/")
     .get(dishesController.list)

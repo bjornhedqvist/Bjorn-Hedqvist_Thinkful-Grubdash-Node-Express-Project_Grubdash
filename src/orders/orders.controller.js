@@ -19,24 +19,27 @@ function isValidOrder(req, res, next) {
     return next({ status: 400, message: "Order must include a mobileNumber" });
   } else if (!dishes) {
     return next({ status: 400, message: "Order must include a dish" });
-  } else if (Array.isArray(dishes).length === 0) {
+  } else if (dishes.length === 0) {
     return next({
       status: 400,
       message: "Order must include at least one dish",
     });
+  } else if ((Array.isArray(dishes)) === false
+  ) {
+    return next({
+      status: 400,
+      message: "Order must include at least one dish",
+    });
+  } else if (dishes) {
+    dishes.forEach((dish, index) => {
+      if (!dish.quantity || typeof dish.quantity !== "number" ) {
+        return next({
+          status: 400,
+          message: `dish ${index} must have a quantity that is an integer greater than 0`,
+        });
+      }
+    });
   }
-  dishes.forEach((dish,index) => {
-    if (
-      !dish.quantity ||
-      Number.isInteger(dish.quantity) === false ||
-      Number(dish.quantity) > 0
-    ) {
-      return next({
-        status: 400,
-        message: `Dish ${index} must have a quantity that is an integer greater than 0`,
-      });
-    }
-  });
   return next();
 }
 
@@ -54,18 +57,18 @@ function create(req, res, next) {
 }
 
 function findOrder(req, res, next) {
-    const { orderId } = req.params;
-    let foundOrder = orders.find((order) => order.id === orderId);
-    if (foundOrder) {
-        res.locals.foundOrder = foundOrder;
-        return next();
-    }
-    next({ status: 404, message: `Order Id: ${orderId} not found` });
+  const { orderId } = req.params;
+  let foundOrder = orders.find((order) => order.id === orderId);
+  if (foundOrder) {
+    res.locals.foundOrder = foundOrder;
+    return next();
+  }
+  next({ status: 404, message: `Order Id: ${orderId} not found` });
 }
 
 function read(req, res, next) {
-    const { foundOrder } = res.locals;
-    res.json({ data: foundOrder });
+  const { foundOrder } = res.locals;
+  res.json({ data: foundOrder });
 }
 
 module.exports = {

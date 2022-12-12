@@ -7,7 +7,7 @@ const ordersRouter = require("../orders/orders.router")
 // /orders routes
 router.route("/:orderId")
     .get(ordersController.read)
-    // .put(ordersController.update)
+    .put(ordersController.update)
     .all(methodNotAllowed)
 
 router.route("/")

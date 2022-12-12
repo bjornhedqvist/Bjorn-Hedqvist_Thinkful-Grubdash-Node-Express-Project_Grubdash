@@ -9,6 +9,7 @@ const ordersRouter = require("../orders/orders.router")
 
 router.route("/")
     .get(dishesController.list)
+    .post(dishesController.create)
     .all(methodNotAllowed)
 
 module.exports = router;

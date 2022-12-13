@@ -8,6 +8,7 @@ const ordersRouter = require("../orders/orders.router")
 router.route("/:orderId")
     .get(ordersController.read)
     .put(ordersController.update)
+    .delete(ordersController.delete)
     .all(methodNotAllowed)
 
 router.route("/")

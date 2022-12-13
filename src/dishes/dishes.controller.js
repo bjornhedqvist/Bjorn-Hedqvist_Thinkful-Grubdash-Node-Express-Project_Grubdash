@@ -90,5 +90,4 @@ module.exports = {
   create: [isValidDish, create],
   read: [findDish, read], 
   update: [findDish, isValidDish, update],
-  // urlExists,
 };
